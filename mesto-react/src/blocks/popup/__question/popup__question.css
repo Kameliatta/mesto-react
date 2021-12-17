@@ -1,0 +1,9 @@
+.popup__question {
+  margin: 34px 36px 16px;
+  width: 358px;
+}
+@media screen and (max-width: 450px) {
+  .popup__question {
+    width: 74.379vw;
+  }
+}

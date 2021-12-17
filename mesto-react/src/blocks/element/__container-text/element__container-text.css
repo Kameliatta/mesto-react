@@ -1,0 +1,31 @@
+.element__container-text {
+  margin: 0;
+  color: black;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 198px;
+}
+@media screen and (max-width: 1024px) {
+  .element__container-text {
+    font-size: 2.5vw;
+    max-width: 20vw;
+  }
+}
+@media screen and (max-width: 768px) {
+  .element__container-text {
+    max-width: 17vw;
+  }
+}
+@media screen and (max-width: 450px) {
+  .element__container-text {
+    font-size: 24px;
+    line-height: 29px;
+    max-width: 224px;
+  }
+}

@@ -1,0 +1,15 @@
+export const popupEdit = '#edit';
+export const popupAdd = '#add';
+export const popupDelete = '#delete';
+export const popupImage = '#open-image';
+export const popupUpdate = '#update';
+export const nameSelector = '.profile__name';
+export const aboutSelector = '.profile__text';
+export const avatarSelector =  '.profile__avatar';
+export const openUpdateButton = document.querySelector('.profile__avatar-button')
+export const openEditButton = document.querySelector('.profile__edit-button');
+export const openAddButton = document.querySelector('.profile__add-button');
+export const profileName = document.querySelector('#name');
+export const profileText = document.querySelector('#description');
+export const profileAvatar = document.querySelector('#avatar');
+export const cardList = '.elements';
