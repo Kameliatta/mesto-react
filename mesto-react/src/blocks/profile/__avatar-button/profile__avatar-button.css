@@ -1,0 +1,12 @@
+.profile__avatar-button {
+  background-color: rgba(0, 0, 0, .8);
+  display: none;
+  padding: 0;
+  position: absolute;
+  border: none;
+  outline: none;
+  height: 121px;
+  width: 121px;
+  top: 0;
+  cursor: pointer;
+}

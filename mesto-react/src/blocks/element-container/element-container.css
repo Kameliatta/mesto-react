@@ -1,0 +1,20 @@
+.element-container {
+  margin: 50px 0 66px;
+}
+@media screen and (max-width: 1024px) {
+  .element-container {
+    margin-right: 7vw;
+    margin-left: 7vw;
+  }
+}
+@media screen and (max-width: 768px) {
+  .element-container {
+    margin-top: 8vw;
+    margin-bottom: 9vw;
+  }
+}
+@media screen and (max-width: 450px) {
+  .element-container {
+    margin: 36px 19px 48px;
+  }
+}
