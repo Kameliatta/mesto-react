@@ -4,9 +4,9 @@ import api from '../utils/api.js';
 import Card from './Card.js';
 
 export default function Main(props) {
-  const [userName, setUserName] = React.useState();
-  const [userDescription, setUserDescription] = React.useState();
-  const [userAvatar, setUserAvatar] = React.useState();
+  const [userName, setUserName] = React.useState(null);
+  const [userDescription, setUserDescription] = React.useState(null);
+  const [userAvatar, setUserAvatar] = React.useState(null);
 
   const [cards, setCards] = React.useState([]);
 
@@ -30,7 +30,9 @@ export default function Main(props) {
               id: item._id,
               likes: item.likes.length,
               src: item.link,
-              name: item.name
+              name: item.name,
+              owner: item.owner,
+              ownerId: item.owner._id
             }
           })
           setCards(cards)
