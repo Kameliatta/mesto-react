@@ -11,7 +11,7 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState('');
+  const [selectedCard, setSelectedCard] = React.useState({name: '', src: ''});
 
   function handleCardClick(card) {
     setSelectedCard(card);
@@ -31,22 +31,22 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
-    setSelectedCard('');
+    setSelectedCard({name: '', src: ''});
   }
 
   return (
     <>
       <Header />
 
-      <Main onEditAvatar={() => {!isEditAvatarPopupOpen && handleEditAvatarClick()}} 
-            onEditProfile={() => {!isEditProfilePopupOpen && handleEditProfileClick()}} 
-            onAddPlace={() => {!isAddPlacePopupOpen && handleAddPlaceClick()}}
+      <Main onEditAvatar={handleEditAvatarClick} 
+            onEditProfile={handleEditProfileClick} 
+            onAddPlace={handleAddPlaceClick}
             onCardClick={handleCardClick}
       />
 
       <PopupWithForm isOpen={isEditProfilePopupOpen} id="edit">
         <form id="edit-container" name="about-profile" className="popup__container">
-          <button id="close-edit" type="button" className="popup__close-button" onClick={() => closeAllPopups()}></button>
+          <button id="close-edit" type="button" className="popup__close-button" onClick={closeAllPopups}></button>
           <h2 className="popup__title">Редактировать профиль</h2>
           <label className="popup__field">
             <input id="name" type="text" name="firstname" className="popup__info" placeholder="Имя" />
@@ -62,7 +62,7 @@ function App() {
 
       <PopupWithForm isOpen={isAddPlacePopupOpen} id="add">
         <form name="about-card" className="popup__container" id="add-container">
-          <button id="close-add" type="button" className="popup__close-button" onClick={() => closeAllPopups()}></button>
+          <button id="close-add" type="button" className="popup__close-button" onClick={closeAllPopups}></button>
           <h2 className="popup__title">Новое место</h2>
           <label className="popup__field">
             <input id="title" type="text" name="name" className="popup__info" placeholder="Название" />
@@ -78,7 +78,7 @@ function App() {
 
       <PopupWithForm isOpen={isEditAvatarPopupOpen} id="update">
         <form name="update-avatar" id="update-container" className="popup__container">
-          <button type="button" className="popup__close-button" onClick={() => closeAllPopups()}></button>
+          <button type="button" className="popup__close-button" onClick={closeAllPopups}></button>
           <h2 className="popup__title">Обновить аватар</h2>
           <label className="popup__field">
             <input id="avatar" type="url" name="link" className="popup__info" placeholder="Ссылка" />
