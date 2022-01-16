@@ -46,6 +46,9 @@ class Api {
       headers: this._headers
     })
       .then(this._getResponseData)
+      .then((result) => {
+        return result
+      })
   }
 
   deleteCard(cardId, method, urlData) {
