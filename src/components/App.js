@@ -1,6 +1,4 @@
-import '../index.css';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Header from './Header.js';
 import Main from './Main.js';
 import Footer from './Footer.js';
@@ -11,7 +9,6 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import api from '../utils/api';
 import { CurrentUserContext } from '../contexts/CurrentUserContent';
-import { CardsContent } from '../contexts/CardsContent';
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
@@ -24,18 +21,7 @@ function App() {
   //получение данных карточек
   React.useEffect(() => {
     api.getCardsInfo()
-      .then(data => {
-        const cards = data.map(item => {
-          return {
-            _id: item._id,
-            likes: item.likes,
-            link: item.link,
-            name: item.name,
-            owner: item.owner
-          }
-        })
-        setCards(cards)
-      })
+      .then(setCards)
       .catch((err) => {
         console.log(`Ошибка: ${err}`)
       })
@@ -67,31 +53,21 @@ function App() {
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
     
-    if(!isLiked) {
-      api.clickLike(card._id, 'PUT', `cards/likes/`)
-          .then((newCard) => {
-            setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-          })
-          .catch((err) => {
-            console.log(`Ошибка: ${err}`)
-          })
-    } else {
-      api.clickLike(card._id, 'DELETE', `cards/likes/`)
-          .then((newCard) => {
-            setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-          })
-          .catch((err) => {
-            console.log(`Ошибка: ${err}`)
-          })
-    }
+    api.clickLike(card._id, !isLiked ? 'PUT' : 'DELETE', `cards/likes/`)
+        .then((newCard) => {
+          setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+        })
+        .catch((err) => {
+          console.log(`Ошибка: ${err}`)
+        })
   }
 
   //обновление информации о пользователе
   function handleUpdateUser(userInfo) {
-    api.setNewData({
+    api.setUserInfo({
       name: userInfo.name,
       about: userInfo.about
-      }, 'PATCH', `users/me`)
+      })
       .then((data) => {
         setCurrentUser(data);
         closeAllPopups();
@@ -103,9 +79,9 @@ function App() {
  
   //обновление аватара
   function handleUpdateAvatar(avatarInfo) {
-    api.setNewData({
+    api.setUserAvatar({
       avatar: avatarInfo.avatar
-    }, 'PATCH', `users/me/avatar`)
+    })
     .then((data) => {
       setCurrentUser(data);
       closeAllPopups();
@@ -117,10 +93,10 @@ function App() {
 
   //добавление новой карточки
   function handleAddPlaceSubmit(newCard) {
-    api.setNewData({
+    api.setCardInfo({
       name: newCard.name,
       link: newCard.link
-      }, 'POST', `cards`)
+      })
       .then((newCard) => {
         setCards([newCard, ...cards]);
         closeAllPopups();
@@ -157,15 +133,14 @@ function App() {
     <>
       <CurrentUserContext.Provider value={currentUser}>
         <Header />
-        <CardsContent.Provider value={cards}>
-          <Main onEditAvatar={handleEditAvatarClick} 
-                onEditProfile={handleEditProfileClick} 
-                onAddPlace={handleAddPlaceClick}
-                onCardClick={handleCardClick}
-                onCardLike={handleCardLike}
-                onCardDelete={handleCardDelete}
-          />
-        </CardsContent.Provider>
+        <Main onEditAvatar={handleEditAvatarClick} 
+              onEditProfile={handleEditProfileClick} 
+              onAddPlace={handleAddPlaceClick}
+              onCardClick={handleCardClick}
+              onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}
+              cards={cards}
+        />
 
         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} /> 
 
@@ -188,11 +163,5 @@ function App() {
     </>
   ) 
 }
-
-ReactDOM.render((
-  <>
-    <App/>
-  </>
-), document.getElementById('root'));
 
 export default App;

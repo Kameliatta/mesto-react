@@ -2,11 +2,9 @@ import avatarButtonImage from '../images/edit-avatar.svg';
 import React from 'react';
 import Card from './Card.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContent';
-import { CardsContent } from '../contexts/CardsContent';
 
 export default function Main(props) {
   const currentUser = React.useContext(CurrentUserContext);
-  const cards = React.useContext(CardsContent);
 
   return (
     <>
@@ -27,7 +25,7 @@ export default function Main(props) {
         </section>
           <section className="element-container">
             <ul className="elements">
-              {cards.map((item) => (
+              {props.cards.map((item) => (
                 <Card 
                     onCardClick={props.onCardClick}
                     onCardLike={props.onCardLike}

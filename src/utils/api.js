@@ -1,8 +1,7 @@
 class Api {
-  constructor(config, renderInfo) {
+  constructor(config) {
     this._url = config.url;
     this._headers = config.headers;
-    this._renderInfo = renderInfo;
   }
 
   _getResponseData(res) {
@@ -31,9 +30,27 @@ class Api {
       })
   }
 
-  setNewData(data, method, urlData) {
-    return fetch(this._url + `${urlData}`, {
-      method: method,
+  setUserInfo(data) {
+    return fetch(this._url + `users/me`, {
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify(data)
+    })
+      .then(this._getResponseData)
+  }
+
+  setUserAvatar(data) {
+    return fetch(this._url + `users/me/avatar`, {
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify(data)
+    })
+      .then(this._getResponseData)
+  }
+
+  setCardInfo(data) {
+    return fetch(this._url + `cards`, {
+      method: 'POST',
       headers: this._headers,
       body: JSON.stringify(data)
     })
@@ -46,9 +63,6 @@ class Api {
       headers: this._headers
     })
       .then(this._getResponseData)
-      .then((result) => {
-        return result
-      })
   }
 
   deleteCard(cardId, method, urlData) {
