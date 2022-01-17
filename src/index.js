@@ -5,7 +5,7 @@ import App from './components/App';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App isEditProfilePopupOpen={false} />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );
