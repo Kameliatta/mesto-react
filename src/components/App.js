@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './Header.js';
 import Main from './Main.js';
 import Footer from './Footer.js';
@@ -11,23 +11,23 @@ import api from '../utils/api';
 import { CurrentUserContext } from '../contexts/CurrentUserContent';
 
 function App() {
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState({name: '', src: ''});
-  const [currentUser, setCurrentUser] = React.useState({});
-  const [cards, setCards] = React.useState([]);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState({name: '', src: ''});
+  const [currentUser, setCurrentUser] = useState({});
+  const [cards, setCards] = useState([]);
 
   //получение данных
-  React.useEffect(() => {
+  useEffect(() => {
     Promise.all([
       api.getUserInfo(),
       api.getCardsInfo()
     ])
 
-    .then((values)=>{
-      setCurrentUser(values[0]);
-      setCards(values[1]);
+    .then(([user, cards])=>{
+      setCurrentUser(user);
+      setCards(cards);
     })
 
     .catch((err)=>{
@@ -52,7 +52,7 @@ function App() {
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
     
-    api.clickLike(card._id, !isLiked)
+    api.clickLike(card._id, isLiked)
         .then((newCard) => {
           setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
         })
