@@ -18,29 +18,28 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
 
-  //получение данных карточек
+  //получение данных
   React.useEffect(() => {
-    api.getCardsInfo()
-      .then(setCards)
-      .catch((err) => {
-        console.log(`Ошибка: ${err}`)
-      })
+    Promise.all([
+      api.getUserInfo(),
+      api.getCardsInfo()
+    ])
+
+    .then((values)=>{
+      setCurrentUser(values[0]);
+      setCards(values[1]);
+    })
+
+    .catch((err)=>{
+        console.log(err);
+    })
   }, [])
 
-  //получение данных пользователя
-  React.useEffect(() => {
-    api.getUserInfo()
-      .then(data => {
-        setCurrentUser(data)
-    })
-      .catch((err) => {
-        console.log(`Ошибка: ${err}`)
-      })
-  }, [])
+  
 
   //удаление карточки
   function handleCardDelete(card) {
-    api.deleteCard(card._id, 'DELETE', `cards/`)
+    api.deleteCard(card._id)
           .then(() => {
             setCards((state) => state.filter((c) => c._id !== card._id));
           })
@@ -53,7 +52,7 @@ function App() {
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
     
-    api.clickLike(card._id, !isLiked ? 'PUT' : 'DELETE', `cards/likes/`)
+    api.clickLike(card._id, !isLiked)
         .then((newCard) => {
           setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
         })
@@ -133,20 +132,33 @@ function App() {
     <>
       <CurrentUserContext.Provider value={currentUser}>
         <Header />
-        <Main onEditAvatar={handleEditAvatarClick} 
-              onEditProfile={handleEditProfileClick} 
-              onAddPlace={handleAddPlaceClick}
-              onCardClick={handleCardClick}
-              onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete}
-              cards={cards}
+        <Main 
+          onEditAvatar={handleEditAvatarClick} 
+          onEditProfile={handleEditProfileClick} 
+          onAddPlace={handleAddPlaceClick}
+          onCardClick={handleCardClick}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
+          cards={cards}
         />
 
-        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} /> 
+        <EditProfilePopup 
+          isOpen={isEditProfilePopupOpen}
+          onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
+        /> 
 
-        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
+        <AddPlacePopup
+          isOpen={isAddPlacePopupOpen}
+          onClose={closeAllPopups}
+          onAddPlace={handleAddPlaceSubmit}
+        />
 
-        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
+        />
 
         <PopupWithForm id="delete">
           <div className="popup__container">

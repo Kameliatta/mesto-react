@@ -25,9 +25,6 @@ class Api {
       headers: this._headers
     })
       .then(this._getResponseData)
-      .then((result) => {
-        return result
-      })
   }
 
   setUserInfo(data) {
@@ -57,17 +54,17 @@ class Api {
       .then(this._getResponseData)
   }
 
-  clickLike(cardId, method, urlData) {
-    return fetch(this._url + urlData + `${cardId}`, {
-      method: method,
+  clickLike(cardId, isLiked) {
+    return fetch(this._url + `cards/likes/` + `${cardId}`, {
+      method: isLiked ? 'PUT' : 'DELETE',
       headers: this._headers
     })
       .then(this._getResponseData)
   }
 
-  deleteCard(cardId, method, urlData) {
-    return fetch(this._url + urlData + `${cardId}`, {
-      method: method,
+  deleteCard(cardId) {
+    return fetch(this._url + `cards/` + `${cardId}`, {
+      method: 'DELETE',
       headers: this._headers
     })
       .then(this._getResponseData)
